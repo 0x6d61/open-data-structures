@@ -1,56 +1,60 @@
 class ArrayStack
-  attr_reader :array, :n
+  attr_accessor :a, :n
 
   def initialize()
-    @array = [nil] * 1
+    @a = [nil] * 1
     @n = 0
   end
 
   def get(index)
-    @array[index]
+    @a[index]
   end
 
   def set(index, item)
-    y = @array[index]
-    @array[index] = item
+    y = @a[index]
+    @a[index] = item
     y
   end
 
+  def size
+    @a.size
+  end
+
   def add(index, item)
-    resize if (@n + 1 >= @array.size)
+    resize if (@n + 1 >= @a.size)
     @n.downto(index + 1) do |j|
-      @array[j] = @array[j - 1]
+      @a[j] = @a[j - 1]
     end
-    @array[index] = item
+    @a[index] = item
     @n += 1
   end
 
   def remove(index)
-    x = @array[index]
+    x = @a.delete_at index
     index.upto(@n - 1) do |j|
-      @array[j] = @array[j + 1]
+      @a[j] = @a[j + 1]
     end
     @n -= 1
-    resize if @array.size >= 3 * @n
+    resize if @a.size >= 3 * @n
     x
   end
 
   def resize
     b = [nil] * [2 * @n, 1].max
     (0...@n).each do |index|
-      b[index] = @array[index]
+      b[index] = @a[index]
     end
-    @array = b
+    @a = b
   end
 end
 
 if $0 == __FILE__
-  array = ArrayStack.new
-  array.add(0, "b")
-  array.add(1, "r")
-  array.add(2, "e")
-  array.add(3, "d")
-  array.add(2, "e")
-  p array.array
-  p array.n
+  a = aStack.new
+  a.add(0, "b")
+  a.add(1, "r")
+  a.add(2, "e")
+  a.add(3, "d")
+  a.add(2, "e")
+  p a.a
+  p a.n
 end
