@@ -2,7 +2,7 @@ class ArrayStack
   attr_accessor :a, :n
 
   def initialize()
-    @a = [nil] * 1
+    @a = [] * 1
     @n = 0
   end
 
@@ -30,17 +30,18 @@ class ArrayStack
   end
 
   def remove(index)
-    x = @a.delete_at index
-    index.upto(@n - 1) do |j|
-      @a[j] = @a[j + 1]
+    x = @a[index]
+    index.upto(@n-1) do |j|
+      @a[j] = @a[j+1] if !@a[j+1].nil?
     end
     @n -= 1
+    @a = @a.slice(0,@n)
     resize if @a.size >= 3 * @n
     x
   end
 
   def resize
-    b = [nil] * [2 * @n, 1].max
+    b = [] * [2 * @n, 1].max
     (0...@n).each do |index|
       b[index] = @a[index]
     end
@@ -49,12 +50,12 @@ class ArrayStack
 end
 
 if $0 == __FILE__
-  a = aStack.new
+  a = ArrayStack.new
   a.add(0, "b")
   a.add(1, "r")
   a.add(2, "e")
   a.add(3, "d")
   a.add(2, "e")
-  p a.a
-  p a.n
+  a.remove(1)
+  a.set(0,"a")
 end
