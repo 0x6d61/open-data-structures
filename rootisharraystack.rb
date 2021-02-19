@@ -16,12 +16,14 @@ class RootishArrayStack
   end
 
   def get(index)
+    raise IndexError if index < 0 || index > @n - 1
     b = i2b(index)
     j = index - b * (b + 1) / 2
     @blocks.get(b)[j]
   end
 
   def set(index, item)
+    raise IndexError if index < 0 || index > @n - 1 
     b = i2b(index)
     j = index - b * (b + 1) / 2
     y = @blocks.get(b)[j]
@@ -30,6 +32,7 @@ class RootishArrayStack
   end
 
   def add(index, item)
+    raise IndexError if index < 0 || index > @n
     r = @blocks.size
     grow if r * (r + 1) / 2 < @n + 1
     @n += 1
@@ -44,6 +47,7 @@ class RootishArrayStack
   end
 
   def remove(index)
+    raise IndexError if index < 0 || index > @n - 1 
     x = get(index)
     index.upto(@n - 2) do |j|
       set(j, get(j + 1))
@@ -57,7 +61,7 @@ class RootishArrayStack
   def shrink
     r = @blocks.size
     while r > 0 && (r - 2) * (r - 1) / 2 >= @n
-      @blocks.remove(@blocks.size - 1)
+      @blocks.remove(@blocks.size-1)
       r -= 1
     end
   end
@@ -70,8 +74,8 @@ if $0 == __FILE__
     ras.add(2,3)
     ras.add(3,4)
     ras.add(4,5)
-    p ras.remove(3)
-    p ras.set(3,4)
-    p ras.get(4)
-    p ras.stack
+    ras.remove(4)
+    ras.remove(3)
+    ras.remove(2)
+    ras.remove(1)
 end
